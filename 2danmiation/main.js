@@ -158,15 +158,35 @@ EvilCircle.prototype.setControls = function() {
   }
 }
 
+EvilCircle.prototype.setMouseControl = function() {
+
+  console.log('mouse will start ');
+
+  window.onmousemove = function(e) {
+
+    var _this = this;
+
+    var posx = e.clientX;
+    var posy = e.clientY;
+
+    _this.x = posx;
+    _this.y = posy;
+
+  }
+
+}
+
 
 var balls = [];
 var evilCirle = new EvilCircle(random(0, width), random(0, height), true);
 
 evilCirle.setControls();
+evilCirle.setMouseControl();
 
 function loop() {
 
-  var ballsLeft = 0;
+  var ballsLeft = balls.length;
+  score.textContent = ballsLeft;
 
   ctx.fillStyle = 'rgba(0,0,0,0.25)';
   ctx.fillRect(0,0,width,height);
@@ -189,7 +209,8 @@ function loop() {
       balls[i].update();
       balls[i].collisionDetect();
 
-      ballsLeft += 1;
+    }else {
+      ballsLeft--;
       score.textContent = ballsLeft;
     }
 
