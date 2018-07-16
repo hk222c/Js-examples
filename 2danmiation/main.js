@@ -40,7 +40,7 @@ Ball.prototype.constructor = Ball;
 
 function EvilCircle(x, y, extsts) {
 
-  Shape.call(this, x, y, 20, 20, extsts);
+  Shape.call(this, x, y, 1, 1, extsts);
 
   this.color = 'white';
   this.size = 10;
@@ -116,6 +116,7 @@ EvilCircle.prototype.collisionDetect = function() {
 
       if(distance < this.size + balls[j].size) {
         balls[j].extsts = false;
+        evilCirle.size += 1;
       }
     }
   }
@@ -144,6 +145,7 @@ EvilCircle.prototype.checkBounds = function() {
 EvilCircle.prototype.setControls = function() {
 
   var _this = this;
+
   window.onkeydown = function(e) {
 
     if(e.keyCode === 65) {
@@ -160,17 +162,38 @@ EvilCircle.prototype.setControls = function() {
 
 EvilCircle.prototype.setMouseControl = function() {
 
-  console.log('mouse will start ');
+  var _this = this;
 
   window.onmousemove = function(e) {
-
-    var _this = this;
 
     var posx = e.clientX;
     var posy = e.clientY;
 
-    _this.x = posx;
-    _this.y = posy;
+    var differenceX = posx - _this.x;
+    var differenceY = posy - _this.y;
+
+    while(_this.x != posx && _this.y != posy) {
+
+      if(_this.x < posx && _this.y < posy) {
+
+        _this.x += _this.velX;
+        _this.y += _this.velY;
+      } else if(_this.x > posx && _this.y < posy) {
+
+        _this.x -= _this.velX;
+        _this.y += _this.velY;
+      }else if(_this.x < posx && _this.y > posy) {
+
+        _this.x += _this.velX;
+        _this.y -= _this.velY;
+      }else {
+
+        _this.x -= _this.velX;
+        _this.y -= _this.velY;
+
+      }
+
+    }
 
   }
 
